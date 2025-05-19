@@ -1,15 +1,15 @@
 name: Build Windows EXE
 
 on:
-  push:
-    branches: [ main ]
+  workflow_dispatch:  # Te permet de lancer manuellement l'action sur GitHub
 
 jobs:
   build:
     runs-on: windows-latest
 
     steps:
-    - uses: actions/checkout@v3
+    - name: Checkout repo
+      uses: actions/checkout@v3
 
     - name: Set up Python
       uses: actions/setup-python@v5
@@ -19,11 +19,11 @@ jobs:
     - name: Install PyInstaller
       run: pip install pyinstaller
 
-    - name: Build EXE
-      run: pyinstaller --onefile launcher_windows.py
+    - name: Build .exe with PyInstaller
+      run: pyinstaller --onefile main.py
 
-    - name: Upload EXE as Artifact
-      uses: actions/upload-artifact@v4
+    - name: Upload EXE artifact
+      uses: actions/upload-artifact@v3
       with:
-        name: launcher_windows
+        name: main-exe
         path: dist/main.exe
